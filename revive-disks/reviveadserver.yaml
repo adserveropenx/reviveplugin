@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reviveadserver
+  labels:
+    app: reviveadserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviveadserver
+  template:
+    metadata:
+      labels:
+        app: reviveadserver
+    spec:
+      containers:
+        - image: reviveadserver
+          name: reviveadserver
+          env:
+          - name: reviveadserver_DB_HOST
+            value: mysql:3306
+          - name: reviveadserver_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql
+                key: password
+          ports:
+            - containerPort: 80
+              name: reviveadserver
+          volumeMounts:
+            - name: reviveadserver-persistent-storage
+              mountPath: /var/www/html
+      volumes:
+        - name: reviveadserver-persistent-storage
+          gcePersistentDisk:
+            pdName: reviveadserver-disk
+            fsType: ext4
