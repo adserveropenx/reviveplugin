@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reviveads
+  labels:
+    app: reviveads
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviveads
+  template:
+    metadata:
+      labels:
+        app: reviveads
+    spec:
+      containers:
+        - image: reviveads
+          name: reviveads
+          ports:
+            - containerPort: 80
+              name: reviveads
+          volumeMounts:
+            - name: reviveads-persistent-storage
+              mountPath: /var/www/html
+      volumes:
+        - name: reviveads-persistent-storage
+          gcePersistentDisk:
+            pdName: reviveads-disk
+            fsType: ext4
