@@ -17,14 +17,6 @@ spec:
       containers:
         - image: reviveadserver
           name: reviveadserver
-          env:
-          - name: reviveadserver_DB_HOST
-            value: mysql:3306
-          - name: reviveadserver_DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mysql
-                key: password
           ports:
             - containerPort: 80
               name: reviveadserver
